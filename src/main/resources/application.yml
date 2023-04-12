@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: ${APP_NAME:weshopify-users-mgmt-svc}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active:
+    - ${DB_PROFILE_ACTIVE:dev}
+
+server:
+  port: ${APP_PORT:5014}
+  
+---
+#DEV Profile
+spring:
+  datasource:
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver} 
+    url: ${DB_PROTOCOL:jdbc}:${DB_TYPE:mysql}://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_SCHEMA:weshopify-users}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+  profiles:
+    active:
+    - dev
+---
+#QA Profile
+spring:
+  datasource:
+    driver-class-name: ${DB_DRIVER:org.h2.Driver}
+    url: ${DB_PROTOCOL:jdbc}:${DB_TYPE:h2}:${DB_HOST:mem}:${DB_SCHEMA:weshopify-users}
+    username: ${DB_USER:sa}
+    password: ${DB_PASSWORD:}
+  h2:
+    console:
+      enabled: true
+      path: /h2Console
+  profiles:
+    active:
+    - qa
