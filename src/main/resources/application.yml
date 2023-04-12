@@ -24,16 +24,16 @@ spring:
     - dev
 ---
 #QA Profile
-spring:
-  datasource:
-    driver-class-name: ${DB_DRIVER:org.h2.Driver}
-    url: ${DB_PROTOCOL:jdbc}:${DB_TYPE:h2}:${DB_HOST:mem}:${DB_SCHEMA:weshopify-users}
-    username: ${DB_USER:sa}
-    password: ${DB_PASSWORD:}
-  h2:
-    console:
-      enabled: true
-      path: /h2Console
-  profiles:
-    active:
-    - qa
+#spring:
+#  datasource:
+#    driver-class-name: ${DB_DRIVER:org.h2.Driver}
+#    url: ${DB_PROTOCOL:jdbc}:${DB_TYPE:h2}:${DB_HOST:mem}:${DB_SCHEMA:weshopify-users}
+#    username: ${DB_USER:sa}
+#    password: ${DB_PASSWORD:}
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2Console
+#  profiles:
+#    active:
+#    - qa
