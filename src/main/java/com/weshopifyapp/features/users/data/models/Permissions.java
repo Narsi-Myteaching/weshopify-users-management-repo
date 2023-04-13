@@ -1,6 +1,7 @@
 package com.weshopifyapp.features.users.data.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +29,11 @@ public class Permissions implements Serializable {
 	private int permissionId;
 	
 	private String name;
+	
+	private String createdBy;
+	private Date createdDate;
+	private String modifiedBy;
+	private Date modifiedDate;
 	
 
 }
