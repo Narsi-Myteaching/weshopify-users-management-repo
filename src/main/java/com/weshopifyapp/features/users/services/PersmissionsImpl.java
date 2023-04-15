@@ -1,10 +1,11 @@
 package com.weshopifyapp.features.users.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.weshopifyapp.features.users.beans.PermissionsBean;
@@ -35,27 +36,44 @@ public class PersmissionsImpl implements PermissionsService {
 	}
 
 	@Override
-	public PermissionsBean updatePermisson(PermissionsBean pbean) {
-		// TODO Auto-generated method stub
-		return null;
+	public PermissionsBean updatePermisson(PermissionsBean pbean) throws PermissionsNotFoundException {
+		try {
+			 return mapEntityToBean(permissionsRepo.save(mapBeanToEntity(pbean)));
+		}catch (Exception e) {
+			throw PermissionsNotFoundException.builder().message(e.getLocalizedMessage()).build();
+		}
 	}
 
 	@Override
-	public PermissionsBean findPermissonById(int permissionsId) {
-		// TODO Auto-generated method stub
-		return null;
+	public PermissionsBean findPermissonById(int permissionsId) throws PermissionsNotFoundException {
+		Permissions permissionsModel = permissionsRepo.findById(permissionsId)
+				                      .orElseThrow(()-> PermissionsNotFoundException
+				                    		            .builder()
+				                    		            .message("No Permissions Found with the Id:\t"+permissionsId)
+				                    		            .build());
+		
+	
+		return mapEntityToBean(permissionsModel);
 	}
 
 	@Override
-	public List<PermissionsBean> deletePermissonById(int permissionsId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PermissionsBean> deletePermissonById(int permissionsId) throws PermissionsNotFoundException {
+		
+		Optional.of(permissionsRepo.existsById(permissionsId)).ifPresentOrElse(id->permissionsRepo.deleteById(permissionsId), 
+				      ()->PermissionsNotFoundException.builder().message("No Permissions Found with the Id:\t"+permissionsId).build());
+		return getAllPermissons();
 	}
 
 	@Override
 	public List<PermissionsBean> getAllPermissons() {
-		// TODO Auto-generated method stub
-		return null;
+		List<PermissionsBean> listOfPermissionBeans = new ArrayList<>();
+		Optional.ofNullable(permissionsRepo.findAll()).ifPresentOrElse(listOfPermissions -> {
+			listOfPermissions.stream().forEach(permission -> {
+				listOfPermissionBeans.add(mapEntityToBean(permission));
+			});
+		}, () -> PermissionsNotFoundException.builder().message("No Permissions Found in the Database").build());
+
+		return listOfPermissionBeans;
 	}
 
 	@Override

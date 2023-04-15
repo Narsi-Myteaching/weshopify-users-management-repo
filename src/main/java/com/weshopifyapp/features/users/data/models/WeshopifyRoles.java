@@ -1,6 +1,7 @@
 package com.weshopifyapp.features.users.data.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 //@Builder
 @NoArgsConstructor
-public class Roles implements Serializable {
+public class WeshopifyRoles implements Serializable {
 
 	/**
 	 * 
@@ -33,4 +34,9 @@ public class Roles implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "roles")
 	private List<RoleToPermissions> role_to_permissions;
+	
+	private String createdBy;
+	private String modifiedBy;
+	private Date createdDate;
+	private Date modifiedDate;
 }

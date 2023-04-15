@@ -8,9 +8,9 @@ import com.weshopifyapp.features.users.data.exceptions.PermissionsNotFoundExcept
 public interface PermissionsService {
 
 	PermissionsBean createPermisson(PermissionsBean pbean) throws PermissionsNotFoundException;
-	PermissionsBean updatePermisson(PermissionsBean pbean);
-	PermissionsBean findPermissonById(int permissionsId);
-	List<PermissionsBean> deletePermissonById(int permissionsId);
+	PermissionsBean updatePermisson(PermissionsBean pbean) throws PermissionsNotFoundException;
+	PermissionsBean findPermissonById(int permissionsId) throws PermissionsNotFoundException;
+	List<PermissionsBean> deletePermissonById(int permissionsId) throws PermissionsNotFoundException;
 	List<PermissionsBean> getAllPermissons();
 	List<PermissionsBean> searchPermissons();
 }

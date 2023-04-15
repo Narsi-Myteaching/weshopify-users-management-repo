@@ -27,7 +27,7 @@ public class RoleToPermissions implements Serializable {
 	private int id;
 	
 	@ManyToOne
-	private Roles roles;
+	private WeshopifyRoles roles;
 	
 	@ManyToOne
 	private Permissions permissions;

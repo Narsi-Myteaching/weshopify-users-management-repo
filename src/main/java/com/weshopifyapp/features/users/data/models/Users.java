@@ -47,6 +47,6 @@ public class Users implements Serializable {/**
 	private boolean isActive;
 	
 	@OneToOne
-	private Roles userRoles;
+	private WeshopifyRoles userRoles;
 
 }
