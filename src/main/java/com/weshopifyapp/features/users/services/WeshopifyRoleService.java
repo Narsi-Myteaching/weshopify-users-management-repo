@@ -10,7 +10,9 @@ public interface WeshopifyRoleService {
 	WeshopifyRolesBean createRole(WeshopifyRolesBean pbean) throws WeshopifyRolesException;
 	WeshopifyRolesBean updateRole(WeshopifyRolesBean pbean) throws WeshopifyRolesException;
 	WeshopifyRolesBean findRoleById(int roleId) throws WeshopifyRolesException;
+	WeshopifyRolesBean findRoleByName(String role) throws WeshopifyRolesException;
 	List<WeshopifyRolesBean> deleteRoleById(int roleId) throws WeshopifyRolesException;
 	List<WeshopifyRolesBean> getAllRoles() throws WeshopifyRolesException;
 	List<WeshopifyRolesBean> searchRoles();
+	
 }

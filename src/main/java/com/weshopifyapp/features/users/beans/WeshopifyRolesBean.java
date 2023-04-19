@@ -26,4 +26,9 @@ public class WeshopifyRolesBean implements Serializable {
 	private String name;
 	
 	private List<PermissionsBean> permissions;
+	
+	/**
+	 * op type is: provisioning/deprovisioning
+	 */
+	private String operation;
 }

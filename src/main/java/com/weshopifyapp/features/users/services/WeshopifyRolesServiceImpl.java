@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import com.weshopifyapp.features.users.beans.WeshopifyRolesBean;
 import com.weshopifyapp.features.users.data.exceptions.WeshopifyRolesException;
 import com.weshopifyapp.features.users.data.models.WeshopifyRoles;
-import com.weshopifyapp.features.users.data.repository.RolesRepository;
+import com.weshopifyapp.features.users.data.repository.WeshopifyRolesRepository;
 
 @Service
 public class WeshopifyRolesServiceImpl implements WeshopifyRoleService {
 
-	private RolesRepository rolesrepo;
+	private WeshopifyRolesRepository rolesrepo;
 	private ModelMapper modelMapper;
 
-	public WeshopifyRolesServiceImpl(RolesRepository rolesrepo, ModelMapper modelMapper) {
+	public WeshopifyRolesServiceImpl(WeshopifyRolesRepository rolesrepo, ModelMapper modelMapper) {
 		this.rolesrepo = rolesrepo;
 		this.modelMapper = modelMapper;
 	}
@@ -88,6 +88,12 @@ public class WeshopifyRolesServiceImpl implements WeshopifyRoleService {
 
 	private WeshopifyRolesBean mapEntityToBean(WeshopifyRoles roles) {
 		return modelMapper.map(roles, WeshopifyRolesBean.class);
+	}
+
+	@Override
+	public WeshopifyRolesBean findRoleByName(String role) throws WeshopifyRolesException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

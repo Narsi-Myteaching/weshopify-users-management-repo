@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class WeshopifyRoles implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int roleId;
 	
+	@Column(nullable = false,unique = true)
 	private String name;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "roles")

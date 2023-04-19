@@ -14,12 +14,14 @@ import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Users implements Serializable {/**
+public class WeshopifyUsers implements Serializable {/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4136621746687875180L;
@@ -43,8 +45,11 @@ public class Users implements Serializable {/**
 	@Column(name = "mobile",nullable = false,unique = true)
 	private String mobile;
 	
-	@Column(name = "isActive",nullable = false)
-	private boolean isActive;
+	@Column(name = "isEnabled",nullable = false)
+	private boolean isEnabled;
+	
+	@Column(name = "isLocked",nullable = true)
+	private boolean isLocked;
 	
 	@OneToOne
 	private WeshopifyRoles userRoles;
