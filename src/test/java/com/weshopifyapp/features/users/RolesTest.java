@@ -3,23 +3,26 @@ package com.weshopifyapp.features.users;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.weshopifyapp.features.users.data.models.RoleToPermissions;
 import com.weshopifyapp.features.users.data.models.WeshopifyRoles;
 import com.weshopifyapp.features.users.data.repository.PermissionsRepository;
-import com.weshopifyapp.features.users.data.repository.RolesRepository;
+import com.weshopifyapp.features.users.data.repository.WeshopifyRolesRepository;
 
 public class RolesTest extends PermissionsTest {
 
 	@Autowired
-	private RolesRepository rolesRepo;
+	private WeshopifyRolesRepository rolesRepo;
 	
 	@Autowired
 	private PermissionsRepository permissions;
 	
 	@Test
+	@Order(value = 2)
 	public void testCreateRole() {
 		
 		
