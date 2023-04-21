@@ -14,13 +14,13 @@ import com.weshopifyapp.features.users.data.models.Permissions;
 import com.weshopifyapp.features.users.data.repository.PermissionsRepository;
 
 @Service
-public class PersmissionsImpl implements PermissionsService {
+public class PermissionsServiceImpl implements PermissionsService {
 
 	private PermissionsRepository permissionsRepo;
 	
 	private ModelMapper modelMapper;
 	
-	public PersmissionsImpl(PermissionsRepository permissionsRepo, ModelMapper modelMapper) {
+	public PermissionsServiceImpl(PermissionsRepository permissionsRepo, ModelMapper modelMapper) {
 		this.permissionsRepo = permissionsRepo;
 		this.modelMapper = modelMapper;
 	} 
@@ -94,6 +94,9 @@ public class PersmissionsImpl implements PermissionsService {
 	
 	private PermissionsBean mapEntityToBean(Permissions permissionsEntity) {
 		PermissionsBean permissionsBean =  modelMapper.map(permissionsEntity, PermissionsBean.class);
+		if(permissionsEntity.getPermissionId() >0 && permissionsBean.getPermissionId() == 0) {
+			permissionsBean.setPermissionId(permissionsEntity.getPermissionId());
+		}
 		return permissionsBean;
 	}
 
