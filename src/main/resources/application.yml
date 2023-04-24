@@ -7,9 +7,16 @@ spring:
   profiles:
     active:
     - ${DB_PROFILE_ACTIVE:dev}
+    
 
 server:
-  port: ${APP_PORT:5014}
+  #port: ${APP_PORT:5014}
+  port: 5014
+
+# swagger-ui custom path
+springdoc: 
+ swagger-ui: 
+     path: /swagger-ui.html
   
 ---
 #DEV Profile

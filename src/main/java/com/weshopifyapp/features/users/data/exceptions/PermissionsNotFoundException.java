@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Builder
-public class PermissionsNotFoundException extends Exception {
+public class PermissionsNotFoundException extends RuntimeException {
 
 	/**
 	 * 

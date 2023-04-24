@@ -26,7 +26,7 @@ public class PermissionsServiceImpl implements PermissionsService {
 	} 
 	
 	@Override
-	public PermissionsBean createPermisson(PermissionsBean pbean) throws PermissionsNotFoundException {
+	public PermissionsBean createPermisson(PermissionsBean pbean) {
 		try {
 			 return mapEntityToBean(permissionsRepo.save(mapBeanToEntity(pbean)));
 		}catch (Exception e) {

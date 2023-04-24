@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Builder
-public class WeshopifyRolesException extends Exception {
+public class WeshopifyRolesException extends RuntimeException {
 
 	/**
 	 * 
