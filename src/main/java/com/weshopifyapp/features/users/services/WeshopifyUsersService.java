@@ -11,12 +11,12 @@ public interface WeshopifyUsersService {
 
 	WeshopifyUsersBean createUser(WeshopifyUsersBean usersBean);
 	WeshopifyUsersBean updateUser(WeshopifyUsersBean usersBean);
-	WeshopifyUsersBean findUserById(int id) throws WeshopifyUsersException;
+	WeshopifyUsersBean findUserById(int id);
 	WeshopifyUsersBean findUserByEmail(String email);
 	List<WeshopifyUsersBean> findAllUsers();
 	List<WeshopifyUsersBean> findAllUsers(int currPage, int noOfRecPerPage);
 	List<WeshopifyUsersBean> deleteUser(WeshopifyUsersBean usersBean) throws WeshopifyUsersException;
-	List<WeshopifyUsersBean> deleteUser(int id) throws WeshopifyUsersException;
+	List<WeshopifyUsersBean> deleteUser(int id);
 	
 	/**
 	 * Search Criteria yet to decides
@@ -30,7 +30,7 @@ public interface WeshopifyUsersService {
 	 * @return
 	 * @throws WeshopifyRolesException 
 	 */
-	WeshopifyUsers provisioning(WeshopifyUsers usersBean);
+	WeshopifyUsers provisioning(WeshopifyUsersBean usersBean);
 	
 	/**
 	 * Un assign the role to a user is called as de-provisioning 
@@ -55,6 +55,8 @@ public interface WeshopifyUsersService {
 	 * @return
 	 */
 	WeshopifyUsersBean unlockUser(int id);
+	
+	WeshopifyUsersBean provisioningRoleToUser(int userId);
 	
 	
 	

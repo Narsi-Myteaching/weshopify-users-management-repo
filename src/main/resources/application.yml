@@ -17,7 +17,9 @@ server:
 springdoc: 
  swagger-ui: 
      path: /swagger-ui.html
-  
+weshopify: 
+ self-reg: 
+   role: Customer  
 ---
 #DEV Profile
 spring:

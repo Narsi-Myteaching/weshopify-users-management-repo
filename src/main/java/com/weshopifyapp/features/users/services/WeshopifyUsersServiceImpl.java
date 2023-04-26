@@ -5,9 +5,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.weshopifyapp.features.users.beans.WeshopifyRolesBean;
 import com.weshopifyapp.features.users.beans.WeshopifyUsersBean;
 import com.weshopifyapp.features.users.data.exceptions.WeshopifyUsersException;
 import com.weshopifyapp.features.users.data.models.WeshopifyRoles;
@@ -22,6 +24,9 @@ public class WeshopifyUsersServiceImpl implements WeshopifyUsersService {
 	private WeshopifyRolesRepository rolesRepo;
 	private ModelMapper modelMapper;
 	
+	@Value("${weshopify.self-reg.role}")
+	private String selfRegRole;
+	
 	WeshopifyUsersServiceImpl(WeshopifyUsersRepository usersRepo,WeshopifyRolesRepository rolesRepo,ModelMapper modelMapper){
 		this.usersRepo = usersRepo;
 		this.rolesRepo = rolesRepo;
@@ -30,15 +35,15 @@ public class WeshopifyUsersServiceImpl implements WeshopifyUsersService {
 	
 	@Override
 	public WeshopifyUsersBean createUser(WeshopifyUsersBean usersBean) {
-		WeshopifyUsers entity = mapBeanToEntity(usersBean);
-		provisioning(entity);
+		
+		WeshopifyUsers entity = provisioning(usersBean);
 		usersRepo.save(entity);
 		return mapEntityToBean(entity);
 	}
 
 	@Override
 	public WeshopifyUsersBean updateUser(WeshopifyUsersBean usersBean) {
-		WeshopifyUsers entity = mapBeanToEntity(usersBean);
+		WeshopifyUsers entity = provisioning(usersBean);
 		String opType = usersBean.getUserRoles().getOperation();
 		if(StringUtils.hasText(opType) && "deProvision".contentEquals(opType)) {
 			deProvisioning(entity);
@@ -48,7 +53,7 @@ public class WeshopifyUsersServiceImpl implements WeshopifyUsersService {
 	}
 
 	@Override
-	public WeshopifyUsersBean findUserById(int id) throws WeshopifyUsersException {
+	public WeshopifyUsersBean findUserById(int id) {
 		return mapEntityToBean(Optional.ofNullable(usersRepo.findById(id))
 				                        .orElseThrow(()->WeshopifyUsersException.builder().message("NO User Found with the Id:\t"+id)
 				                        .build())
@@ -112,13 +117,35 @@ public class WeshopifyUsersServiceImpl implements WeshopifyUsersService {
 	}
 
 	@Override
-	public WeshopifyUsers provisioning(WeshopifyUsers users){
-	  	Optional<WeshopifyRoles> userRole = Optional
-	  								.ofNullable(users.getUserRoles())
-	  								.map(role->rolesRepo.findById(role.getRoleId())).get();
-		WeshopifyRoles roleInDB =  userRole.get();
-	  	users.setUserRoles(roleInDB);
-		return users;
+	public WeshopifyUsers provisioning(WeshopifyUsersBean usersBean){
+		WeshopifyRoles roleInDB =  null;
+		WeshopifyUsers userEntity = null;
+		
+		if(usersBean.getUserRoles() != null) {
+			Optional<WeshopifyRoles> userRole = Optional
+						.ofNullable(usersBean.getUserRoles())
+						.map(role->rolesRepo.findById(role.getRoleId())).get();
+			roleInDB =  userRole.get();
+		}
+	  	
+		/**
+		 * incase of update user we will pass the id so that it will verify the 
+		 * user existed in db or not
+		 */
+		if(usersBean.getId() >0 && usersRepo.existsById(usersBean.getId())) {
+			//userEntity = usersRepo.findById(usersBean.getId()).get();
+			userEntity = mapBeanToEntity(usersBean);
+			userEntity.setUserRoles(roleInDB);
+		}else {
+			/**
+			 * in the case of the CreateUser
+			 */
+			userEntity = mapBeanToEntity(usersBean);
+			userEntity.setUserRoles(roleInDB);
+		}
+		
+				
+		return userEntity;
 	}
 
 	@Override
@@ -129,12 +156,15 @@ public class WeshopifyUsersServiceImpl implements WeshopifyUsersService {
 
 	@Override
 	public WeshopifyUsersBean enableUser(int id) throws WeshopifyUsersException {
-		Optional.ofNullable(usersRepo.findById(id).get()).ifPresentOrElse(user->{
-			user.setEnabled(true);
-			usersRepo.save(user);
-		}, ()->WeshopifyUsersException.builder().message("No User Found with User Id:\t"+id).build());
-		
-		return findUserById(id);
+		/*
+		 * Optional.ofNullable(usersRepo.findById(id).get()).ifPresentOrElse(user->{
+		 * user.setEnabled(true); //role shuld be provisionined usersRepo.save(user); },
+		 * ()->WeshopifyUsersException.builder().message("No User Found with User Id:\t"
+		 * +id).build());
+		 * 
+		 * return findUserById(id);
+		 */
+		return provisioningRoleToUser(id);
 	}
 
 	@Override
@@ -149,5 +179,30 @@ public class WeshopifyUsersServiceImpl implements WeshopifyUsersService {
 	
 	private WeshopifyUsersBean mapEntityToBean(WeshopifyUsers users) {
 		return modelMapper.map(users, WeshopifyUsersBean.class);
+	}
+
+	@Override
+	public WeshopifyUsersBean provisioningRoleToUser(int userId) {
+		
+		/**
+		 * step-1: with the customer role name, 
+		 * get the role details from the db
+		 */
+		Optional<WeshopifyRoles> userRole = rolesRepo.findByName(selfRegRole);
+		WeshopifyRoles roleInDB =  userRole.get();
+		
+		/**
+		 * with the userId get the user details from the DB
+		 * and assign the role
+		 */
+		WeshopifyUsers userEntity = usersRepo.findById(userId).get();
+		userEntity.setUserRoles(roleInDB);
+		userEntity.setEnabled(true);
+		userEntity.setLocked(false);
+		
+		/**
+		 * save the updated user in the db and convert it into a bean
+		 */
+		return mapEntityToBean(usersRepo.save(userEntity));
 	}
 }

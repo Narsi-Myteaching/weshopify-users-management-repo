@@ -36,5 +36,6 @@ public class WeshopifyUsersBean implements Serializable {/**
 	private boolean isLocked;
 	
 	private WeshopifyRolesBean userRoles;
+	private boolean isSelfReg;
 
 }

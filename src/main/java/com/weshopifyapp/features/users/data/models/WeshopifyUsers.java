@@ -5,8 +5,10 @@ package com.weshopifyapp.features.users.data.models;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,7 +53,7 @@ public class WeshopifyUsers implements Serializable {/**
 	@Column(name = "isLocked",nullable = true)
 	private boolean isLocked;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private WeshopifyRoles userRoles;
 
 }
